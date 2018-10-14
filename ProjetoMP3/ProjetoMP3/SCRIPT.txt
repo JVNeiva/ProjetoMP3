@@ -1,4 +1,5 @@
-﻿CREATE DATABASE Mp3DB;
+﻿DROP DATABASE Mp3DB;
+CREATE DATABASE Mp3DB;
 USE Mp3DB;
 
 CREATE TABLE tb_logins(
@@ -18,24 +19,33 @@ CREATE TABLE tb_musicas(
     nm_cantor varchar(150),
     ds_genero varchar(50),
     dt_lancamento date,
-    PRIMARY KEY(id_musica)
+    id_login INT NOT NULL,
+    PRIMARY KEY(id_musica),
+    FOREIGN KEY(id_login)
+    REFERENCES tb_logins(id_login)
 );
 
 CREATE TABLE tb_playlists(
 	id_playlist INT NOT NULL AUTO_INCREMENT,
     nm_playlist varchar(50) NOT NULL,
-    PRIMARY KEY(id_playlist)
+    id_login INT NOT NULL,
+    PRIMARY KEY(id_playlist),
+	FOREIGN KEY(id_login)
+    REFERENCES tb_logins(id_login)
 );
 
 CREATE TABLE tb_playlistMusica(
 	id_playMusica INT NOT NULL AUTO_INCREMENT,
     id_playlist INT NOT NULL,
     id_musica INT NOT NULL,
+    id_login INT NOT NULL,
     PRIMARY KEY(id_playMusica),
     FOREIGN KEY (id_playlist)
     REFERENCES tb_playlists(id_playlist),
     FOREIGN KEY (id_musica)
-    REFERENCES tb_musicas(id_musica)
+    REFERENCES tb_musicas(id_musica),
+	FOREIGN KEY(id_login)
+    REFERENCES tb_logins(id_login)
 );
 
 CREATE TABLE tb_album(
@@ -44,13 +54,19 @@ CREATE TABLE tb_album(
     nm_album varchar(50) NOT NULL,
     img_album longblob,
     dt_lancamento date,
-    PRIMARY KEY(id_album)
+    id_login INT NOT NULL,
+    PRIMARY KEY(id_album),
+	FOREIGN KEY(id_login)
+    REFERENCES tb_logins(id_login)
 );
 
 CREATE TABLE tb_favoritos(
 	id_favorito INT NOT NULL AUTO_INCREMENT,
     id_musica INT NOT NULL,
+    id_login INT NOT NULL,
     PRIMARY KEY(id_favorito),
     FOREIGN KEY(id_musica)
-    REFERENCES tb_musicas(id_musica)
+    REFERENCES tb_musicas(id_musica),
+	FOREIGN KEY(id_login)
+    REFERENCES tb_logins(id_login)
 );
